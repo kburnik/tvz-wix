@@ -32,6 +32,8 @@
             <CheckBox IsChecked="{Binding IsTimerEnabled}" Margin="2">Refresh automatically</CheckBox>
             <TextBlock Text="Last update:" Padding="2" Margin="3,0,0,0"></TextBlock>
             <TextBlock Text="{Binding Timestamp}" Padding="2" Margin="3,0,0,0"></TextBlock>
+            <TextBlock Text="Filter (RegEx):" Padding="2" Margin="3,0,0,0"></TextBlock>
+            <TextBox Text="{Binding Path=Filter,UpdateSourceTrigger=PropertyChanged}"  Width="120"></TextBox>
             <TextBlock Text="{Binding Error}" Foreground="Red" Padding="2" Margin="3,0,0,0"></TextBlock>
             <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="4" Panel.ZIndex="1" Width="20"
                          Margin="3"
@@ -43,7 +45,7 @@
                                       FallbackValue=Hidden}" />
         </StackPanel>
 
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Path=TickerItems}" Grid.Row="2" Grid.Column="1"
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Path=FilteredTickerItems}" Grid.Row="2" Grid.Column="1"
                   IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Pair" Binding="{Binding CurrencyPair}"/>
