@@ -19,9 +19,7 @@
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <!-- Require administrative privileges for installation. E.g. installing to %PROGRAM_FILES%. -->
-    <Condition Message="You need to be an administrator to install this product.">
-      Privileged
-    </Condition>
+    <Condition Message="You need to be an administrator to install this product.">Privileged</Condition>
 
     <!-- Include the CAB files into the MSI. -->
     <Media Id='1' Cabinet='CrpytoTicker.cab' EmbedCab='yes' />
@@ -44,8 +42,8 @@
     <Property Id="LAUNCH_AFTER_UPDATE" Value ="0" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
 
-    <!-- This part mostly has to do when upgrading to a newer version. Depending on the use case it can be left as is.
-    -->
+    <!-- This part is about upgrading to a newer version. Depending on the use case this may be generated.
+         For most common use cases, just leave as is. -->
     <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
     <Upgrade Id="$(var.UpgradeCode)">
       <!-- Ad. ICE61: We don't embed the current version on every build since it's safer. Ignore warning. -->
@@ -71,7 +69,9 @@
 	</Product>
 
   <Fragment>
-    <!-- Directories -->
+    <!-- Directories: This is somewhat confusing: Is it as source or a target directory?
+         This should actually represent the drive with most space available.
+         Read more here: http://stackoverflow.com/a/11003825 -->
     <Directory Id="TARGETDIR" Name="SourceDir">
 
       <!-- This will result in copying the binaries into c:\Program Files\Manufacturer\ProductName\ -->
