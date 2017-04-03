@@ -6,7 +6,7 @@
     <ProductVersion>3.9</ProductVersion>
     <ProjectGuid>72858a51-2eba-4d2e-b2c8-069597935490</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>DemoApp.WIX</OutputName>
+    <OutputName>CryptoTicker</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -53,7 +53,7 @@
   <PropertyGroup>
     <WPFOutput>$(ProjectDir)..\DemoApp.WPF\bin\$(Configuration)\</WPFOutput>
     <LicenseRtf>$(ProjectDir)LICENSE.rtf</LicenseRtf>
-    <HarvestDir>$(ProjectDir)Harvest\</HarvestDir>
+    <HarvestDir>$(ProjectDir)Harvest\$(Configuration)\</HarvestDir>
   </PropertyGroup>
   <Target Name="RemoveDirectories">
     <RemoveDir Directories="$(HarvestDir)" ContinueOnError="true" />
@@ -75,6 +75,25 @@
       <DefineConstants>HARVESTDIR=$(HarvestDir)</DefineConstants>
     </PropertyGroup>
     <HeatDirectory OutputFile="DemoAppBinaries.wxs" Directory="$(HarvestDir)" KeepEmptyDirectories="true" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="DemoAppBinaries" SuppressCom="true" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.HARVESTDIR" />
+    <!-- Sign the app binaries after WIX build in Release mode. -->
+    <CallTarget Targets="SignHarvested" Condition="$(Configuration) == 'Release'" />
+  </Target>
+  <PropertyGroup>
+    <SignTool>"c:\Program Files (x86)\Windows Kits\8.1\bin\x64\signtool.exe"</SignTool>
+    <SignArgs>sign /n "GridWaves" /t http://timestamp.comodoca.com/authenticode</SignArgs>
+  </PropertyGroup>
+  <Target Name="SignHarvested">
+    <ItemGroup>
+      <HarvestedFiles Include="$(HarvestDir)*.exe" />
+      <HarvestedFiles Include="$(HarvestDir)*.dll" />
+    </ItemGroup>
+    <Exec Command="$(SignTool) $(SignArgs) @(HarvestedFiles, ' ')" />
+  </Target>
+  <Target Name="SignMsi">
+    <ItemGroup>
+      <SetupFiles Include="$(OutputPath)*.msi" />
+    </ItemGroup>
+    <Exec Command="$(SignTool) $(SignArgs) @(SetupFiles, ' ')" />
   </Target>
   <Target Name="DeleteHarvestedFiles">
     <ItemGroup>
@@ -82,6 +101,10 @@
       </AllHarvestedFiles>
     </ItemGroup>
     <Delete Files="@(AllHarvestedFiles)" />
+  </Target>
+  <Target Name="AfterBuild">
+    <!-- Sign the MSI after WIX build in Release mode. -->
+    <CallTarget Targets="SignMsi" Condition="$(Configuration) == 'Release'" />
   </Target>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

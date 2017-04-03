@@ -27,18 +27,22 @@ pokazuju principi rada s [Windows Installer XML (WIX)](http://wixtoolset.org/).
 
 ![CryptoCurrency Ticker app](docs/DemoApp.png)
 
-## Digitally sign the MSI
+## Code signing
+
+The app is already being signed in the Release mode builds. For this purpose
+I've used the publisher name "GridWaves" and a self-signed certificate generated
+on my machine.
+
+In a real production use, you would have to buy a real certificate which
+ensures you as a company or organization should be trusted by the user.
 
 ### Create a self-signed certificate
 
 Run "Digital Certificate for VBA Projects" from the Microsoft Office Tools.
 You should enter the publisher name, this should create a self signed
-certificate with the name "Publisher Name" (i.e. whatevery you enter).
+certificate with the name "Publisher Name" (i.e. whatever you enter).
 
-You can examine the certificate in [Start key] > "Manage user certificates".
-
-Note that you should sign all of the binaries before running the WIX build.
-This can be done in the BeforeBuild step of the .wixproj XML.
+You can examine the certificate in [Start] > "Manage user certificates".
 
 This is an example of signing a file from git-bash on Windows:
 
