@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmpC009E694945B1AB447691BA8C271EC68" Guid="{69BE994C-FE28-422B-ABA5-1F1D946B3115}">
+                <File Id="filC68B642E55851F3DE3736672508764DB" KeyPath="yes" Source="$(var.HARVESTDIR)\CryptoTicker.exe" />
+            </Component>
+            <Component Id="cmpDED491AC79E34C6568C5DD37BB5E2CA0" Guid="{2F5810A2-B88F-47E3-8A2F-C346B4412770}">
+                <File Id="fil19C240AEFF567F2D35AC6CC3AFFF954A" KeyPath="yes" Source="$(var.HARVESTDIR)\CryptoTicker.exe.config" />
+            </Component>
+            <Component Id="cmp5DFEF94534E9A9E063E957BEB1B1AEED" Guid="{DE7D8204-34C0-4146-9275-F293D8492694}">
+                <File Id="fil0D726F4DB9A557421B96126308678DD4" KeyPath="yes" Source="$(var.HARVESTDIR)\CryptoTicker.Lib.dll" />
+            </Component>
+            <Component Id="cmpDFB92546A2FC87C7E90F8066645A2A5B" Guid="{7B4B68CA-AD91-431C-BB6A-B380DE24C42B}">
+                <File Id="fil60DF65A77AEAEA499C29B03C6E04FBD3" KeyPath="yes" Source="$(var.HARVESTDIR)\FontAwesome.WPF.dll" />
+            </Component>
+            <Component Id="cmpEEE12B7B325C5D891AF7E29B1D49EE03" Guid="{46BB9E16-7C82-4E15-B5C2-A1A2D0EEA946}">
+                <File Id="fil53CD056D4A9D7EE8BD88E85E50F69F8F" KeyPath="yes" Source="$(var.HARVESTDIR)\LICENSE.rtf" />
+            </Component>
+            <Component Id="cmpBC4FC00A26E7D32479D42D3411317FC5" Guid="{D09E01CF-44A2-4C47-B647-4013B739B162}">
+                <File Id="fil90A8AAD9FC612906D405476D61CEA3F4" KeyPath="yes" Source="$(var.HARVESTDIR)\Newtonsoft.Json.dll" />
+            </Component>
+            <Component Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" Guid="{1049F042-2754-4A64-8CF0-2F8851D7AA88}">
+                <File Id="fil17E34524E8398461D615894C92558FE9" KeyPath="yes" Source="$(var.HARVESTDIR)\System.Windows.Interactivity.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DemoAppBinaries">
+            <ComponentRef Id="cmpC009E694945B1AB447691BA8C271EC68" />
+            <ComponentRef Id="cmpDED491AC79E34C6568C5DD37BB5E2CA0" />
+            <ComponentRef Id="cmp5DFEF94534E9A9E063E957BEB1B1AEED" />
+            <ComponentRef Id="cmpDFB92546A2FC87C7E90F8066645A2A5B" />
+            <ComponentRef Id="cmpEEE12B7B325C5D891AF7E29B1D49EE03" />
+            <ComponentRef Id="cmpBC4FC00A26E7D32479D42D3411317FC5" />
+            <ComponentRef Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

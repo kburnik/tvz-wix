@@ -1,30 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="DemoApp.WIX" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="95fdaca6-865e-4a92-b002-ab82db84054a">
+
+  <?define ProductManufacturer = "GridWaves" ?>
+  <?define ProductName = "CryptoCurrency Ticker" ?>
+  <?define ProductDescription = "A simple ticker for the Poloniex crypt-currency trade" ?>
+
+  <?define MainExecutableBasename = "CryptoTicker.exe" ?>
+  <?define ProductVersion = "!(bind.fileVersion.filC68B642E55851F3DE3736672508764DB)" ?>
+  <!-- TODO: ADD file -->
+  <?define UpgradeCode = "adae7d3e-1db0-4f98-8ac3-0c0afac7743c" ?>
+
+  <Product Id="*"
+           Name="$(var.ProductName)"
+           Language="1033"
+           Version="$(var.ProductVersion)"
+           Manufacturer="$(var.ProductManufacturer)"
+           UpgradeCode="$(var.UpgradeCode)">
+
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+    <!-- Require administrative privileges for installation. E.g. installing to %PROGRAM_FILES%. -->
+    <Condition Message="You need to be an administrator to install this product.">
+      Privileged
+    </Condition>
 
-		<Feature Id="ProductFeature" Title="DemoApp.WIX" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
+    <!-- Include the CAB files into the MSI. -->
+    <Media Id='1' Cabinet='CrpytoTicker.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
+    <Property Id='DiskPrompt' Value="CrpytoCurrency Ticker Installation [1]" />
+
+    <!-- Features to be installed: Sometimes users can choose which features are to be installed. -->
+    <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1" ConfigurableDirectory='INSTALLFOLDER'>
+      <!-- Refering to binaries: .exe and .dll. -->
+      <ComponentGroupRef Id="ProductComponents" />
+
+      <!-- This allows the program to appear in the start menu program list. -->
+      <ComponentRef Id="ProgramMenuDir" />
+
+      <!-- This allows the program to appear on the Desktop as a shortcut. -->
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <!-- Custom Action: Run app after install. -->
+    <Property Id="WixShellExecTarget" Value="[#filC68B642E55851F3DE3736672508764DB]" /><!-- TODO: ADD file -->
+    <Property Id="LAUNCH_AFTER_UPDATE" Value ="0" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+
+    <!-- This part mostly has to do when upgrading to a newer version. Depending on the use case it can be left as is.
+    -->
+    <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+    <Upgrade Id="$(var.UpgradeCode)">
+      <!-- Ad. ICE61: We don't embed the current version on every build since it's safer. Ignore warning. -->
+      <UpgradeVersion Minimum="1.0.0.0"
+                      IncludeMinimum="yes"
+                      OnlyDetect="no"
+                      Maximum="99.9.9.9"
+                      IncludeMaximum="no"
+                      Property="PREVIOUSVERSIONSINSTALLED" />
+    </Upgrade>
+
+    <!-- Defines an order of actions to be taken by the installer. -->
+    <InstallExecuteSequence>
+      <!-- Remove an older installation if present. -->
+      <RemoveExistingProducts Before="InstallInitialize" />
+
+      <!-- Launch the application after it was updated. This is useful for a custom updater which downloads a new
+           version of the installer and runs in the background, after finishing, it relaunches the app.
+           E.g. running the MSI with flags: /passive LAUNCH_AFTER_UPDATE=1
+           Note: Expression between tags is a condition. -->
+      <Custom Action='LaunchApplication' After='InstallFinalize'>LAUNCH_AFTER_UPDATE = 1</Custom>
+    </InstallExecuteSequence>
 	</Product>
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="DemoApp.WIX" />
-			</Directory>
-		</Directory>
-	</Fragment>
+  <Fragment>
+    <!-- Directories -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
 
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-			<!-- </Component> -->
-		</ComponentGroup>
-	</Fragment>
+      <!-- This will result in copying the binaries into c:\Program Files\Manufacturer\ProductName\ -->
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="$(var.ProductManufacturer)">
+          <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
+        </Directory>
+      </Directory>
+
+      <!-- Describes how to add the Start Menu shortcut for the main executable and possibly other targets. -->
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="$(var.ProductName)">
+          <Component Id="ProgramMenuDir" Guid="AFC023AB-7E98-44CE-B049-C477CC0A2B01">
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+            <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <!-- Reference for user's Desktop. -->
+      <Directory Id="DesktopFolder" Name="Desktop" />
+
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <!-- Reference to binaries in *heat* generated file VicoinzBinaries.wxs -->
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <ComponentGroupRef Id="DemoAppBinaries" />
+    </ComponentGroup>
+
+    <!-- Shortcuts -->
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="ApplicationShortcut" Guid="AFC023A1-CEDA-4323-69DA-20A23AF61133">
+        <!-- Ad. ICE69: We generate the list of binaries and reference them here. Ignore warning. -->
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="$(var.ProductName)"
+                  Description="$(var.ProductDescription)"
+                  Directory="ProgramMenuDir"
+                  WorkingDirectory='INSTALLFOLDER'
+                  Icon="$(var.MainExecutableBasename)"
+                  Target="[#filC68B642E55851F3DE3736672508764DB]"
+                  IconIndex="0" /><!-- TODO: reference the file. -->
+        <Shortcut Id="ApplicationDesktopShortcut"
+                  Name="$(var.ProductName)"
+                  Directory="DesktopFolder"
+                  WorkingDirectory='INSTALLFOLDER'
+                  Target="[#filC68B642E55851F3DE3736672508764DB]"
+                  Icon="$(var.MainExecutableBasename)"
+                  IconIndex="0" /><!-- TODO: reference the file. -->
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]"
+                       Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf" />
+
+    <!-- Main Icon Source -->
+    <Icon Id="$(var.MainExecutableBasename)" SourceFile="$(var.DemoApp.WPF.TargetPath)" />
+
+    <!-- Build Info -->
+    <Property Id="build_configuration">$(var.Configuration)</Property>
+
+    <!-- Do not manualy modify the tags or default values.
+         The real values are replaced during build time on TeamCity. -->
+    <Property Id="build_type">Development</Property>
+    <Property Id="build_number">-1</Property>
+    <Property Id="build_date">1970-01-01 00:00:00</Property>
+    <Property Id="top_commit_hash">n/a</Property>
+
+    <!-- Icon in Programs and Features. -->
+    <Property Id="ARPPRODUCTICON" Value="$(var.MainExecutableBasename)" />
+
+    <!-- Give user ability to specify installation directory. -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <!-- Launch app after install -->
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch $(var.ProductName)" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+      <UIRef Id="WixUI_ErrorProgressText" />
+      <Publish Dialog="ExitDialog"
+          Control="Finish"
+          Event="DoAction"
+          Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+
+    <WixVariable Id="WixUIDialogBmp" Value="setup-bg.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="setup-top-bg.bmp" />
+
+    <!-- Wizard UI elements -->
+    <!--
+    <WixVariable Id="WixUIBannerBmp" Value="path\banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="path\dialog.bmp" />
+    <WixVariable Id="WixUIExclamationIco" Value="path\exclamation.ico" />
+    <WixVariable Id="WixUIInfoIco" Value="path\information.ico" />
+    <WixVariable Id="WixUINewIco" Value="path\new.ico" />
+    <WixVariable Id="WixUIUpIco" Value="path\up.ico" />
+    -->
+  </Fragment>
 </Wix>
