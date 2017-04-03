@@ -1,3 +1,5 @@
+![CryptoCurrency Ticker icon](DemoApp/DemoApp.WPF/Assets/AppIcon.png)
+
 # Windows Installer XML Demo Application
 ## CryptoCurrency Ticker
 
