@@ -5,7 +5,8 @@ A simple Crypto Currency Ticker application for Windows. Target market is
 [Poloniex](https://www.poloniex.com).
 
 This topic is used as a simple example of a "useful" application for showcasing
-MSI installer building using the [Windows Installer XML (WIX)](http://wixtoolset.org/)
+MSI installer building using the
+[Windows Installer XML (WIX)](http://wixtoolset.org/).
 
 --------------------------------------------------------------------------------
 
