@@ -24,13 +24,16 @@ namespace DemoApp.WPF.ViewModel
 
         private PoloniexClient _poloniexClient = null;
         private ObservableCollection<TickerItem> _tickerItems = null;
+        private DispatcherTimer _dispatcherTimer = null;
         private string _networkError = null;
         private string _filterError = null;
         private bool _isRefreshing = false;
-        private DispatcherTimer _dispatcherTimer = null;
         private string _filter = string.Empty;
         private Regex _filterRegex = new Regex(DefaultRegexPattern);
 
+        /// <summary>
+        /// Creates a new instace of the ticker view model.
+        /// </summary>
         public TickerViewModel()
         {
             this._poloniexClient = new PoloniexClient();
@@ -43,11 +46,24 @@ namespace DemoApp.WPF.ViewModel
             this._dispatcherTimer.IsEnabled = false;
         }
 
+        /// <summary>
+        /// The IPropertyChanged event signaling a change of a model has ocurred so UI can sync.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Command used to refresh the current ticker data.
+        /// </summary>
         public RelayCommand RefreshCommand { get; set; }
+
+        /// <summary>
+        /// The command to invoke once UI is ready to initlaize the view model and load the first batch of data.
+        /// </summary>
         public RelayCommand InitializeCommand { get; set; }
 
+        /// <summary>
+        /// The serialized timestamp of the most recent succesful request.
+        /// </summary>
         public string Timestamp
         {
             get
@@ -56,6 +72,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// The currently set RegEx filter for filtering the ticker items.
+        /// </summary>
         public string Filter
         {
             get
@@ -85,6 +104,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// Determines whether a network request is in progress.
+        /// </summary>
         public bool IsRefreshing
         {
             get
@@ -99,6 +121,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// Determines whether the auto-refresh timer is currently enabled.
+        /// </summary>
         public bool IsTimerEnabled
         {
             get
@@ -113,7 +138,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// The entire ticker data. This is unfiltered.
+        /// </summary>
         public ObservableCollection<TickerItem> TickerItems
         {
             get
@@ -129,6 +156,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// The collection view the UI should bind to to display filtered items of the ticker.
+        /// </summary>
         public ICollectionView FilteredTickerItems
         {
             get
@@ -139,6 +169,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// The last ocurred network error message. It is only set for a failing request.
+        /// </summary>
         public string NetworkError
         {
             get
@@ -154,6 +187,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// The current error of a filtering expression.
+        /// </summary>
         public string FilterError
         {
             get
@@ -169,6 +205,9 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// The current error of the view model. This displays the error of the highest priority.
+        /// </summary>
         public string Error
         {
             get
@@ -177,12 +216,20 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// Predicate for filtering the ticker items based on the currently set RegEx filter.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private bool FilterItem(object obj)
         {
             var item = (TickerItem)obj;
             return this._filterRegex.Match(item.CurrencyPair).Success;
         }
 
+        /// <summary>
+        /// Initializes the view model and loads the initial ticker data.
+        /// </summary>
         private void Initialize()
         {
             this.IsTimerEnabled = true;

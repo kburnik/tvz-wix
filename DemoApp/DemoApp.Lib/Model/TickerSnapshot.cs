@@ -8,7 +8,7 @@ namespace DemoApp.Lib.Model
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an entire ticker (map of all currencies) in a given time.
+    /// Represents an entire ticker (map of all available crypto-currencies) in a given time.
     /// </summary>
     public class TickerSnapshot : Dictionary<string, TickerCurrency>
     {

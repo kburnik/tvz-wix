@@ -11,6 +11,10 @@ namespace DemoApp.Lib.Model
     using System.Text;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Represents a model wrapping the currency pair (key) and the details.
+    /// Suitable for keeping in a list-like structure.
+    /// </summary>
     public class TickerItem
     {
         public string CurrencyPair { get; set; }

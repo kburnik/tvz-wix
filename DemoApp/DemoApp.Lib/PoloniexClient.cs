@@ -10,6 +10,9 @@ namespace DemoApp.Lib
     using DemoApp.Lib.Model;
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Client for interacting with the Poloniex web API.
+    /// </summary>
     public class PoloniexClient
     {
         private static readonly string PublicEndpointUrl = "https://poloniex.com/public?command=";
