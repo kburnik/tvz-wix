@@ -3,21 +3,24 @@
  * Copyright (c) 2017 Kristijan Burnik
  * Please refer to the LICENSE file in project root.
  */
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
-using System.Windows.Data;
-using System.Windows.Threading;
-using DemoApp.Lib;
-using DemoApp.Lib.Model;
-using DemoApp.WPF.View.ViewModel;
-
 namespace DemoApp.WPF.ViewModel
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Text.RegularExpressions;
+    using System.Windows.Data;
+    using System.Windows.Threading;
+    using DemoApp.Lib;
+    using DemoApp.Lib.Model;
+    using DemoApp.WPF.View.ViewModel;
+
+    /// <summary>
+    /// The main view model for the ticker logic and UI interaction.
+    /// </summary>
     public class TickerViewModel : INotifyPropertyChanged
     {
-        private static string DefaultRegexPattern = ".*";
+        private static readonly string DefaultRegexPattern = ".*";
 
         private PoloniexClient _poloniexClient = null;
         private ObservableCollection<TickerItem> _tickerItems = null;
@@ -27,11 +30,6 @@ namespace DemoApp.WPF.ViewModel
         private DispatcherTimer _dispatcherTimer = null;
         private string _filter = string.Empty;
         private Regex _filterRegex = new Regex(DefaultRegexPattern);
-
-        public RelayCommand RefreshCommand { get; set; }
-        public RelayCommand InitializeCommand { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public TickerViewModel()
         {
@@ -44,6 +42,11 @@ namespace DemoApp.WPF.ViewModel
             this._dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
             this._dispatcherTimer.IsEnabled = false;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public RelayCommand RefreshCommand { get; set; }
+        public RelayCommand InitializeCommand { get; set; }
 
         public string Timestamp
         {
@@ -72,8 +75,8 @@ namespace DemoApp.WPF.ViewModel
                 {
                     this._filterRegex = new Regex(this._filter, RegexOptions.IgnoreCase);
                     this.FilterError = null;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Filter)));
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilteredTickerItems)));
+                    this.RaisePropertyChanged(nameof(this.Filter));
+                    this.RaisePropertyChanged(nameof(this.FilteredTickerItems));
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +95,7 @@ namespace DemoApp.WPF.ViewModel
             set
             {
                 this._isRefreshing = value;
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRefreshing)));
+                this.RaisePropertyChanged(nameof(this.IsRefreshing));
             }
         }
 
@@ -106,7 +109,7 @@ namespace DemoApp.WPF.ViewModel
             set
             {
                 this._dispatcherTimer.IsEnabled = value;
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsTimerEnabled)));
+                this.RaisePropertyChanged(nameof(this.IsTimerEnabled));
             }
         }
 
@@ -121,8 +124,8 @@ namespace DemoApp.WPF.ViewModel
             set
             {
                 this._tickerItems = value;
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TickerItems)));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilteredTickerItems)));
+                this.RaisePropertyChanged(nameof(this.TickerItems));
+                this.RaisePropertyChanged(nameof(this.FilteredTickerItems));
             }
         }
 
@@ -136,12 +139,6 @@ namespace DemoApp.WPF.ViewModel
             }
         }
 
-        private bool FilterItem(object obj)
-        {
-            var item = (TickerItem)obj;
-            return this._filterRegex.Match(item.CurrencyPair).Success;
-        }
-
         public string NetworkError
         {
             get
@@ -152,8 +149,8 @@ namespace DemoApp.WPF.ViewModel
             set
             {
                 this._networkError = value;
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NetworkError)));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Error)));
+                this.RaisePropertyChanged(nameof(this.NetworkError));
+                this.RaisePropertyChanged(nameof(this.Error));
             }
         }
 
@@ -167,8 +164,8 @@ namespace DemoApp.WPF.ViewModel
             set
             {
                 this._filterError = value;
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilterError)));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Error)));
+                this.RaisePropertyChanged(nameof(this.FilterError));
+                this.RaisePropertyChanged(nameof(this.Error));
             }
         }
 
@@ -178,6 +175,12 @@ namespace DemoApp.WPF.ViewModel
             {
                 return this._filterError ?? this._networkError;
             }
+        }
+
+        private bool FilterItem(object obj)
+        {
+            var item = (TickerItem)obj;
+            return this._filterRegex.Match(item.CurrencyPair).Success;
         }
 
         private void Initialize()
@@ -205,8 +208,9 @@ namespace DemoApp.WPF.ViewModel
                 {
                     this.TickerItems.Add(item);
                 }
+
                 this.NetworkError = null;
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Timestamp)));
+                this.RaisePropertyChanged(nameof(this.Timestamp));
             }
             catch (Exception ex)
             {
@@ -216,6 +220,15 @@ namespace DemoApp.WPF.ViewModel
             {
                 this.IsRefreshing = false;
             }
+        }
+
+        /// <summary>
+        /// Shorthand method for raising the property changed event.
+        /// </summary>
+        /// <param name="name"></param>
+        private void RaisePropertyChanged(string name)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

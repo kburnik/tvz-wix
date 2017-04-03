@@ -1,15 +1,15 @@
-using System;
-using System.Diagnostics;
-using System.Windows.Input;
-
 namespace DemoApp.WPF.View.ViewModel
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Input;
+
     public class RelayCommand : ICommand
     {
         #region Fields
 
-        readonly Action<object> execute;
-        readonly Predicate<object> canExecute;
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
         #endregion
 
@@ -23,20 +23,17 @@ namespace DemoApp.WPF.View.ViewModel
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             if (execute == null)
+            {
                 throw new ArgumentNullException("execute");
+            }
 
-            this.execute = execute;
-            this.canExecute = canExecute;
+            this._execute = execute;
+            this._canExecute = canExecute;
         }
+
         #endregion
 
         #region ICommand Members
-
-        [DebuggerStepThrough]
-        public bool CanExecute(object parameter)
-        {
-            return canExecute == null ? true : canExecute(parameter);
-        }
 
         public event EventHandler CanExecuteChanged
         {
@@ -44,9 +41,15 @@ namespace DemoApp.WPF.View.ViewModel
             remove { CommandManager.RequerySuggested -= value; }
         }
 
+        [DebuggerStepThrough]
+        public bool CanExecute(object parameter)
+        {
+            return this._canExecute == null ? true : this._canExecute(parameter);
+        }
+
         public void Execute(object parameter)
         {
-            execute(parameter);
+            this._execute(parameter);
         }
 
         #endregion

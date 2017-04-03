@@ -3,20 +3,15 @@
  * Copyright (c) 2017 Kristijan Burnik
  * Please refer to the LICENSE file in project root.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DemoApp.Lib.Model
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents an entire ticker (map of all currencies) in a given time.
     /// </summary>
     public class TickerSnapshot : Dictionary<string, TickerCurrency>
     {
-
         private List<TickerItem> _items;
 
         public List<TickerItem> Items

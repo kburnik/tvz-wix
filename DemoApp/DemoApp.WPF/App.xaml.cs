@@ -3,10 +3,10 @@
  * Copyright (c) 2017 Kristijan Burnik
  * Please refer to the LICENSE file in project root.
  */
-using System.Windows;
-
 namespace DemoApp.WPF
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
