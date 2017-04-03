@@ -1,0 +1,12 @@
+﻿<Application x:Class="DemoApp.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DemoApp.WPF.ViewModel"
+             xmlns:c="clr-namespace:DemoApp.WPF.Converter"
+             StartupUri="TickerWindow.xaml">
+    <Application.Resources>
+        <local:TickerViewModel x:Key="TickerViewModel" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <c:InvertedBooleanConverter x:Key="InvertedBooleanConverter" />
+    </Application.Resources>
+</Application>
