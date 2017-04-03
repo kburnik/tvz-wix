@@ -2,25 +2,25 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Fragment>
         <DirectoryRef Id="INSTALLFOLDER">
-            <Component Id="cmpC009E694945B1AB447691BA8C271EC68" Guid="{FD118940-D54D-431B-8D35-5F524F841BE1}">
+            <Component Id="cmpC009E694945B1AB447691BA8C271EC68" Guid="{001DE103-8ED3-492C-B31F-17F6502F7B71}">
                 <File Id="filC68B642E55851F3DE3736672508764DB" KeyPath="yes" Source="$(var.HARVESTDIR)\CryptoTicker.exe" />
             </Component>
-            <Component Id="cmpDED491AC79E34C6568C5DD37BB5E2CA0" Guid="{751A92CD-5947-4338-9023-0A2CF68C6FDC}">
+            <Component Id="cmpDED491AC79E34C6568C5DD37BB5E2CA0" Guid="{42429706-6BFA-4E31-9E89-67CA1342FEC6}">
                 <File Id="fil19C240AEFF567F2D35AC6CC3AFFF954A" KeyPath="yes" Source="$(var.HARVESTDIR)\CryptoTicker.exe.config" />
             </Component>
-            <Component Id="cmp5DFEF94534E9A9E063E957BEB1B1AEED" Guid="{C759A8D9-F3BD-484A-8EEF-EA1EA91B33A8}">
+            <Component Id="cmp5DFEF94534E9A9E063E957BEB1B1AEED" Guid="{9D3623D2-916D-40A8-B710-26A26305C927}">
                 <File Id="fil0D726F4DB9A557421B96126308678DD4" KeyPath="yes" Source="$(var.HARVESTDIR)\CryptoTicker.Lib.dll" />
             </Component>
-            <Component Id="cmpDFB92546A2FC87C7E90F8066645A2A5B" Guid="{F62B48FC-F80F-4ECC-93E7-99C294F31BE9}">
+            <Component Id="cmpDFB92546A2FC87C7E90F8066645A2A5B" Guid="{82FEF491-01C7-4648-A332-DAC543ED955D}">
                 <File Id="fil60DF65A77AEAEA499C29B03C6E04FBD3" KeyPath="yes" Source="$(var.HARVESTDIR)\FontAwesome.WPF.dll" />
             </Component>
-            <Component Id="cmpEEE12B7B325C5D891AF7E29B1D49EE03" Guid="{89A966B2-ED7E-4798-B6E2-4ED8B9BB7924}">
+            <Component Id="cmpEEE12B7B325C5D891AF7E29B1D49EE03" Guid="{3E582997-CA08-4DA9-A3D2-0975A33FF482}">
                 <File Id="fil53CD056D4A9D7EE8BD88E85E50F69F8F" KeyPath="yes" Source="$(var.HARVESTDIR)\LICENSE.rtf" />
             </Component>
-            <Component Id="cmpBC4FC00A26E7D32479D42D3411317FC5" Guid="{97055E62-ADDF-4C80-B3B7-715E901FC149}">
+            <Component Id="cmpBC4FC00A26E7D32479D42D3411317FC5" Guid="{8671F087-80EF-4551-A880-C766A7D2ECA7}">
                 <File Id="fil90A8AAD9FC612906D405476D61CEA3F4" KeyPath="yes" Source="$(var.HARVESTDIR)\Newtonsoft.Json.dll" />
             </Component>
-            <Component Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" Guid="{4A2779CB-EA61-4C5F-9144-68FA5C9FFD41}">
+            <Component Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" Guid="{B9626D3E-7A99-4EBB-A4A0-2A201F1F4342}">
                 <File Id="fil17E34524E8398461D615894C92558FE9" KeyPath="yes" Source="$(var.HARVESTDIR)\System.Windows.Interactivity.dll" />
             </Component>
         </DirectoryRef>

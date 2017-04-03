@@ -3,11 +3,10 @@
 
   <?define ProductManufacturer = "GridWaves" ?>
   <?define ProductName = "CryptoCurrency Ticker" ?>
-  <?define ProductDescription = "A simple ticker for the Poloniex crypt-currency trade" ?>
-
-  <?define MainExecutableBasename = "CryptoTicker.exe" ?>
-  <?define ProductVersion = "!(bind.fileVersion.filC68B642E55851F3DE3736672508764DB)" ?>
-  <!-- TODO: ADD file -->
+  <?define ProductDescription = "A simple ticker for the Poloniex crypt-currency trade." ?>
+  <?define MainExecutableRefId = "filC68B642E55851F3DE3736672508764DB" ?>
+  <?define MainExecutableBasename = "$(var.DemoApp.WPF.TargetFileName)" ?>
+  <?define ProductVersion = "!(bind.fileVersion.$(var.MainExecutableRefId))" ?>
   <?define UpgradeCode = "adae7d3e-1db0-4f98-8ac3-0c0afac7743c" ?>
 
   <Product Id="*"
@@ -25,7 +24,7 @@
     </Condition>
 
     <!-- Include the CAB files into the MSI. -->
-    <Media Id='1' Cabinet='CrpytoTicker.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
+    <Media Id='1' Cabinet='CrpytoTicker.cab' EmbedCab='yes' />
     <Property Id='DiskPrompt' Value="CrpytoCurrency Ticker Installation [1]" />
 
     <!-- Features to be installed: Sometimes users can choose which features are to be installed. -->
@@ -41,7 +40,7 @@
     </Feature>
 
     <!-- Custom Action: Run app after install. -->
-    <Property Id="WixShellExecTarget" Value="[#filC68B642E55851F3DE3736672508764DB]" /><!-- TODO: ADD file -->
+    <Property Id="WixShellExecTarget" Value="[#$(var.MainExecutableRefId)]" />
     <Property Id="LAUNCH_AFTER_UPDATE" Value ="0" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
 
@@ -86,7 +85,9 @@
       <Directory Id="ProgramMenuFolder" Name="Programs">
         <Directory Id="ProgramMenuDir" Name="$(var.ProductName)">
           <Component Id="ProgramMenuDir" Guid="AFC023AB-7E98-44CE-B049-C477CC0A2B01">
+            <!-- Tells what to remove on uninstall. -->
             <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+            <!-- The registry key for the application. -->
             <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
           </Component>
         </Directory>
@@ -114,15 +115,38 @@
                   Directory="ProgramMenuDir"
                   WorkingDirectory='INSTALLFOLDER'
                   Icon="$(var.MainExecutableBasename)"
-                  Target="[#filC68B642E55851F3DE3736672508764DB]"
-                  IconIndex="0" /><!-- TODO: reference the file. -->
+                  Target="[#$(var.MainExecutableRefId)]"
+                  IconIndex="0" />
+
+        <!--  Add the desktop shortcut to main executable. -->
         <Shortcut Id="ApplicationDesktopShortcut"
                   Name="$(var.ProductName)"
                   Directory="DesktopFolder"
                   WorkingDirectory='INSTALLFOLDER'
-                  Target="[#filC68B642E55851F3DE3736672508764DB]"
+                  Target="[#$(var.MainExecutableRefId)]"
                   Icon="$(var.MainExecutableBasename)"
-                  IconIndex="0" /><!-- TODO: reference the file. -->
+                  IconIndex="0" />
+
+        <!-- Add the uninstall shortcut the start menu. -->
+        <Shortcut Id="UninstallProduct"
+                  Name="Uninstall $(var.ProductName)"
+                  Directory="ProgramMenuDir"
+                  WorkingDirectory='INSTALLFOLDER'
+                  Description="Uninstalls $(var.ProductName)"
+                  Target="[SystemFolder]msiexec.exe"
+                  Arguments="/x [ProductCode]"
+                  Icon="$(var.MainExecutableBasename)"
+                  IconIndex="0" />
+
+        <!-- Add the uninstall shortcut to the program files directory. -->
+        <Shortcut Id="UninstallProduct_2"
+                  Name="Uninstall $(var.ProductName)"
+                  Directory="INSTALLFOLDER"
+                  WorkingDirectory='INSTALLFOLDER'
+                  Description="Uninstalls $(var.ProductName)"
+                  Target="[SystemFolder]msiexec.exe"
+                  Arguments="/x [ProductCode]"/>
+
         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]"
                        Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
@@ -165,10 +189,8 @@
     <WixVariable Id="WixUIDialogBmp" Value="setup-bg.bmp" />
     <WixVariable Id="WixUIBannerBmp" Value="setup-top-bg.bmp" />
 
-    <!-- Wizard UI elements -->
+    <!-- Rest of Wizard UI elements -->
     <!--
-    <WixVariable Id="WixUIBannerBmp" Value="path\banner.bmp" />
-    <WixVariable Id="WixUIDialogBmp" Value="path\dialog.bmp" />
     <WixVariable Id="WixUIExclamationIco" Value="path\exclamation.ico" />
     <WixVariable Id="WixUIInfoIco" Value="path\information.ico" />
     <WixVariable Id="WixUINewIco" Value="path\new.ico" />
