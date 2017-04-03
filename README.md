@@ -1,4 +1,5 @@
-# Windows Installer XML Demo Application (CryptoCurrency Ticker)
+# Windows Installer XML Demo Application
+## CryptoCurrency Ticker
 
 A simple Crypto Currency Ticker application for Windows. Target market is
 [Poloniex](https://www.poloniex.com).
@@ -8,7 +9,8 @@ MSI installer building using the [Windows Installer XML (WIX)](http://wixtoolset
 
 --------------------------------------------------------------------------------
 
-# Windows Installer XML demo aplikacija (Trenutne cijene kriptovaluta)
+# Windows Installer XML demo aplikacija
+## Praćenje cijena kriptovaluta
 
 Jednostavna Windows aplikacija s pregledom stanja burze kriptovaluta. Ciljana
 burza je [Poloniex](https://www.poloniex.com).
