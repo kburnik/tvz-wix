@@ -1,0 +1,18 @@
+﻿extensions: .cs .cpp .h
+/*
+ * MIT License
+ * Copyright (c) 2017 Kristijan Burnik
+ * Please refer to the LICENSE file in project root.
+ */
+extensions: .aspx .ascx
+<%--
+MIT License
+Copyright (c) 2017 Kristijan Burnik
+Please refer to the LICENSE file in project root.
+--%>
+extensions:  .xml .config .xsd .wxs
+<!--
+MIT License
+Copyright (c) 2017 Kristijan Burnik
+Please refer to the LICENSE file in project root.
+-->

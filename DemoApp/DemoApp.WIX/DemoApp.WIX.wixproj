@@ -23,6 +23,9 @@
   <ItemGroup>
     <Compile Include="DemoAppSetup.wxs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DemoApp.licenseheader" />
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

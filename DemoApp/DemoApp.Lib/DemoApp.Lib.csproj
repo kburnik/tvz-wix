@@ -52,6 +52,9 @@
     <Compile Include="Model\TickerCurrency.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\DemoApp.licenseheader">
+      <Link>DemoApp.licenseheader</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

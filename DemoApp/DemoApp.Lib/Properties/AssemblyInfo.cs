@@ -1,4 +1,9 @@
-﻿using System.Reflection;
+﻿/*
+ * MIT License
+ * Copyright (c) 2017 Kristijan Burnik
+ * Please refer to the LICENSE file in project root.
+ */
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

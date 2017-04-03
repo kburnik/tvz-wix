@@ -1,4 +1,9 @@
-﻿using System.Net.Http;
+﻿/*
+ * MIT License
+ * Copyright (c) 2017 Kristijan Burnik
+ * Please refer to the LICENSE file in project root.
+ */
+using System.Net.Http;
 using System.Threading.Tasks;
 using DemoApp.Lib.Model;
 using Newtonsoft.Json;
