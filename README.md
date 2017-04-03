@@ -1,5 +1,7 @@
 ![CryptoCurrency Ticker icon](DemoApp/DemoApp.WPF/Assets/AppIcon.png)
 
+--------------------------------------------------------------------------------
+
 # Windows Installer XML Demo Application
 ## CryptoCurrency Ticker
 
@@ -20,3 +22,7 @@ burza je [Poloniex](https://www.poloniex.com).
 
 Ova tema je odabrana kao jednostavan primjer "korisne" aplikacije za koju se
 pokazuju principi rada s [Windows Installer XML (WIX)](http://wixtoolset.org/).
+
+--------------------------------------------------------------------------------
+
+![CryptoCurrency Ticker app](docs/DemoApp.png)
