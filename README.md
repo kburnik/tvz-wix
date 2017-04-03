@@ -34,7 +34,7 @@ I've used the publisher name "GridWaves" and a self-signed certificate generated
 on my machine.
 
 In a real production use, you would have to buy a real certificate which
-ensures you as a company or organization should be trusted by the user.
+ensures you as a company or organization can be trusted by the user.
 
 ### Create a self-signed certificate
 
