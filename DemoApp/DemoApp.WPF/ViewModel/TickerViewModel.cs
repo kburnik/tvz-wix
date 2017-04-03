@@ -21,7 +21,8 @@ namespace DemoApp.WPF.ViewModel
 
         private PoloniexClient _poloniexClient = null;
         private ObservableCollection<TickerItem> _tickerItems = null;
-        private string _error = null;
+        private string _networkError = null;
+        private string _filterError = null;
         private bool _isRefreshing = false;
         private DispatcherTimer _dispatcherTimer = null;
         private string _filter = string.Empty;
@@ -67,12 +68,19 @@ namespace DemoApp.WPF.ViewModel
                 }
 
                 this._filter = value;
-                this._filterRegex = new Regex(this._filter, RegexOptions.IgnoreCase);
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Filter)));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilteredTickerItems)));
+                try
+                {
+                    this._filterRegex = new Regex(this._filter, RegexOptions.IgnoreCase);
+                    this.FilterError = null;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Filter)));
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilteredTickerItems)));
+                }
+                catch (Exception ex)
+                {
+                    this.FilterError = ex.Message;
+                }
             }
         }
-
 
         public bool IsRefreshing
         {
@@ -134,17 +142,41 @@ namespace DemoApp.WPF.ViewModel
             return this._filterRegex.Match(item.CurrencyPair).Success;
         }
 
-        public string Error
+        public string NetworkError
         {
             get
             {
-                return this._error;
+                return this._networkError;
             }
 
             set
             {
-                this._error = value;
+                this._networkError = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NetworkError)));
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Error)));
+            }
+        }
+
+        public string FilterError
+        {
+            get
+            {
+                return this._filterError;
+            }
+
+            set
+            {
+                this._filterError = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilterError)));
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Error)));
+            }
+        }
+
+        public string Error
+        {
+            get
+            {
+                return this._filterError ?? this._networkError;
             }
         }
 
@@ -173,12 +205,12 @@ namespace DemoApp.WPF.ViewModel
                 {
                     this.TickerItems.Add(item);
                 }
-                this.Error = null;
+                this.NetworkError = null;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Timestamp)));
             }
             catch (Exception ex)
             {
-                this.Error = ex.Message;
+                this.NetworkError = ex.Message;
             }
             finally
             {
