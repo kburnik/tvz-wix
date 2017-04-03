@@ -57,7 +57,7 @@ namespace DemoApp.WPF.ViewModel
 
             set
             {
-                this._dispatcherTimer.IsEnabled = true;
+                this._dispatcherTimer.IsEnabled = value;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsTimerEnabled)));
             }
         }
