@@ -70,3 +70,14 @@ signtool sign
     -t http://timestamp.comodoca.com/authenticode \
      DemoApp/DemoApp.WIX/bin/Debug/DemoApp.WIX.msi
 ```
+
+## Command line MSI management (git-bash running as Administrator)
+
+```sh
+# Install and launch
+msiexec.exe -qn -passive LAUNCH_AFTER_UPDATE=1  -i CryptoTicker.msi
+
+# Uninstall
+msiexec.exe -qn -uninstall CryptoTicker.msi
+```
+
