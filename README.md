@@ -27,6 +27,24 @@ pokazuju principi rada s [Windows Installer XML (WIX)](http://wixtoolset.org/).
 
 ![CryptoCurrency Ticker app](docs/DemoApp.png)
 
+--------------------------------------------------------------------------------
+
+## Requirements
+
+These are the requirements I've satisfied to make this project build. You might
+be able to achieve the same with newer versions, if you manage, please create
+a pull request with the setup you've used.
+
+* [Visual Studio 2015 Community](https://www.microsoft.com/en-us/download/details.aspx?id=48146) - MS does a good job at burying older versions.
+* [WIX toolset 3.10.3](http://wixtoolset.org/releases/)
+* [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) - needed for SignTool.exe when
+building in release.
+
+### Troubleshooting
+
+* [Missing MSBuild?](https://www.microsoft.com/en-us/download/confirmation.aspx?id=48159)
+
+
 ## Code signing
 
 The app is already being signed in the Release mode builds. For this purpose

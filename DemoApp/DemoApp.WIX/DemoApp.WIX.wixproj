@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>3.9</ProductVersion>
+    <ProductVersion>3.10.3</ProductVersion>
     <ProjectGuid>72858a51-2eba-4d2e-b2c8-069597935490</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>CryptoTicker</OutputName>
