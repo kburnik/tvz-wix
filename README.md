@@ -75,7 +75,7 @@ signtool sign
 
 ```sh
 # Install and launch
-msiexec.exe -qn -passive LAUNCH_AFTER_UPDATE=1  -i CryptoTicker.msi
+msiexec.exe -qn -passive LAUNCH_AFTER_UPDATE=1 -i CryptoTicker.msi
 
 # Uninstall
 msiexec.exe -qn -uninstall CryptoTicker.msi
